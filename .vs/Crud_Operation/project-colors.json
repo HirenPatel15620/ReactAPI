@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "9e8d060e-4997-4894-9336-632614189f7d": {
+      "ProjectGuid": "9e8d060e-4997-4894-9336-632614189f7d",
+      "DisplayName": "Crud_Operation",
+      "ColorIndex": 0
+    },
+    "d9d7c2d5-0306-4a1a-b098-67e1d40476fe": {
+      "ProjectGuid": "d9d7c2d5-0306-4a1a-b098-67e1d40476fe",
+      "DisplayName": "Repository",
+      "ColorIndex": 1
+    },
+    "ebf99f65-3705-42a8-b4d9-bdc943e5ebb7": {
+      "ProjectGuid": "ebf99f65-3705-42a8-b4d9-bdc943e5ebb7",
+      "DisplayName": "Model",
+      "ColorIndex": 2
+    }
+  },
+  "NextColorIndex": 3
+}
