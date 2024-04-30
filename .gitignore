@@ -1,0 +1,50 @@
+# **/.classpath
+# **/.dockerignore
+# **/.env
+# **/.git
+# **/.gitignore
+# **/.project
+# **/.settings
+# **/.toolstarget
+# **/.vs
+# **/.vscode
+# **/*.*proj.user
+# **/*.dbmdl
+# **/*.jfm
+# **/azds.yaml
+# **/bin
+# **/charts
+# **/docker-compose*
+# **/Dockerfile*
+# **/node_modules
+# **/npm-debug.log
+# **/obj
+# **/secrets.dev.yaml
+# **/values.dev.yaml
+# LICENSE
+# README.md
+
+#ignore thumbnails created by windows
+Thumbs.db
+#Ignore files build by Visual Studio
+*.obj
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.dll
+*.lib
+*.sbr
+.vs/
