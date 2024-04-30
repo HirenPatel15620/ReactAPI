@@ -1,103 +1,118 @@
+using FluentValidation.Results;
+using isCTv9.API.Core.Utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Data;
 using Model.Models;
-using Repository.Interface;
+using Repository;
+using Repository.CommonServices;
+using Repository.Models;
+using Repository.ModelValidators;
+using Repository.Services.UserService;
 
 namespace Crud_Operation.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]/[action]")]
     public class UserController : Controller
     {
         #region Injected Dependencies
-        private readonly IUser repo;
+        private readonly IUser _user;
         private readonly typescript_demoContext _db;
         #endregion
 
         #region constructor
-        public UserController(IUser _repo, typescript_demoContext db)
+        public UserController(IUser user, typescript_demoContext db)
         {
             _db = db;
-            repo = _repo;
+            _user = user;
         }
         #endregion
 
         #region CRUD operation
-
-        [HttpGet("/user/getall")]
-        public async Task<ActionResult<IEnumerable<User>>> Ge()
+        /// <summary>
+        /// Retrieve Get All User
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(RetrieveUserDataDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Produces("application/json")]
+        public async Task<IActionResult> RetrieveGetAllUser()
         {
-            if (_db.Users == null)
-            {
-                return NotFound();
-            }
-            return await _db.Users.ToListAsync();
+            var results = await _user.RetrieveGetAllUser();
+            return Ok(results);
         }
 
-        [HttpGet("/user/get")]
-        public async Task<ActionResult<User>> GetUser(long id)
+        /// <summary>
+        /// Get UserBy Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id:min(1)}")]
+        [ProducesResponseType(typeof(RetrieveUserDataDto), StatusCodes.Status200OK)]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetUserById([FromRoute] long id)
         {
-            if (_db.Users == null)
-            {
-                return NotFound();
-            }
-            var user = await _db.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
+            var status = await _user.GetUserById(id);
+            return Ok(status);
+        }
 
-            }
+  
+        [HttpPost]
+        [ProducesResponseType(typeof(CreateGenericResponseDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> PostUser([FromBody] CreateOrUpdateUserReqModel payload)
+        {
+            var validator = new CreateOrUpdateUserValidator(true);
 
-            return Ok(user);
+            ValidationResult modelResult = validator.Validate(payload);
+
+            if (modelResult.IsValid)
+            {
+                var result = await _user.CreateOrUpdateUser(0,payload);
+                return result.Response(ModelState, HttpContext, "");
+            }
+            else
+            {
+                return modelResult.Response(ModelState, HttpContext);
+            }
 
         }
 
-        [HttpPost("/user/add")]
-        public async Task<ActionResult<User>> PostUser(User user)
+        [HttpPut("{id:min(1)}")]
+        [ProducesResponseType(typeof(CreateGenericResponseDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> PutUser([FromQuery] long id, [FromBody] CreateOrUpdateUserReqModel payload)
         {
-            _db.Users.Add(user);
-            await _db.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
+
+            var validator = new CreateOrUpdateUserValidator(true);
+
+            ValidationResult modelResult = validator.Validate(payload);
+
+            if (modelResult.IsValid)
+            {
+                var result = await _user.CreateOrUpdateUser(Convert.ToInt32(id), payload);
+                return result.Response(ModelState, HttpContext, "");
+            }
+            else
+            {
+                return modelResult.Response(ModelState, HttpContext);
+            }
         }
 
-
-
-        [HttpPut("/user/update/{id}")]
-        public async Task<ActionResult> PutUser(long id, User user)
+        [ProducesResponseType(typeof(DeleteGenericResponseDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpDelete("{id:min(1)}")]
+        public async Task<IActionResult> DeleteUser(long id)
         {
-
-            if (id != user.UserId)
-            {
-                return BadRequest();
-            }
-            _db.Entry(user).State = EntityState.Modified;
-            try
-            {
-                await _db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
-            return Ok();
-        }
-
-        [HttpDelete("/user/delete/{id}")]
-        public async Task<ActionResult> DeleteUser(long id)
-        {
-            if (_db.Users == null)
-            {
-                return NotFound();
-            }
-            var user = await _db.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            _db.Users.Remove(user);
-            await _db.SaveChangesAsync();
-            return Ok();
+            var status = await _user.DeleteUser(Convert.ToInt32(id));
+            return status.Response(ModelState, HttpContext, "");
         }
         #endregion
     }

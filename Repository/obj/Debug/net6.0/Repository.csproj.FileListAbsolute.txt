@@ -32,3 +32,21 @@ c:\Users\pca189\Desktop\React API\Repository\obj\Debug\net6.0\refint\Repository.
 c:\Users\pca189\Desktop\React API\Repository\obj\Debug\net6.0\Repository.pdb
 c:\Users\pca189\Desktop\React API\Repository\obj\Debug\net6.0\Repository.genruntimeconfig.cache
 c:\Users\pca189\Desktop\React API\Repository\obj\Debug\net6.0\ref\Repository.dll
+c:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\Repository.csproj.AssemblyReference.cache
+c:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\Repository.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\Repository.AssemblyInfoInputs.cache
+c:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\Repository.AssemblyInfo.cs
+c:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\Repository.csproj.CoreCompileInputs.cache
+c:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\Repository.sourcelink.json
+c:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\Repository.dll
+c:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\refint\Repository.dll
+c:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\Repository.pdb
+C:\Users\pca189\Desktop\React and API study\development\development-API\Repository\bin\Debug\net6.0\Repository.deps.json
+C:\Users\pca189\Desktop\React and API study\development\development-API\Repository\bin\Debug\net6.0\Repository.runtimeconfig.json
+C:\Users\pca189\Desktop\React and API study\development\development-API\Repository\bin\Debug\net6.0\Repository.dll
+C:\Users\pca189\Desktop\React and API study\development\development-API\Repository\bin\Debug\net6.0\Repository.pdb
+C:\Users\pca189\Desktop\React and API study\development\development-API\Repository\bin\Debug\net6.0\Model.dll
+C:\Users\pca189\Desktop\React and API study\development\development-API\Repository\bin\Debug\net6.0\Model.pdb
+C:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\Repository.csproj.CopyComplete
+C:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\Repository.genruntimeconfig.cache
+C:\Users\pca189\Desktop\React and API study\development\development-API\Repository\obj\Debug\net6.0\ref\Repository.dll

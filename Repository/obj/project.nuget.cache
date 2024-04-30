@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "uWLe0KJagq9Mnnq83Gu7OzrLE30yQcVhf7V1rOSYuKjAgSWfYB1GkJc6gF5jF2BbH5jJ2nWNj0V2Um6Ud9K3aw==",
+  "dgSpecHash": "PHZgsuOIW6Llg0eEEOR4W8cGSUsrfj5EnD18BEe2l42N6RmEprT2a9mKkmRiHp9Dg7WRXENB0bbAABOO//bXKg==",
   "success": true,
-  "projectFilePath": "c:\\Users\\pca189\\Desktop\\React API\\Repository\\Repository.csproj",
+  "projectFilePath": "C:\\Users\\pca189\\Desktop\\React and API study\\development\\development-API\\Repository\\Repository.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\pca189\\.nuget\\packages\\fluentvalidation\\11.9.1\\fluentvalidation.11.9.1.nupkg.sha512",
+    "C:\\Users\\pca189\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.9.1\\fluentvalidation.dependencyinjectionextensions.11.9.1.nupkg.sha512",
+    "C:\\Users\\pca189\\.nuget\\packages\\genericservices.statusgeneric\\1.2.0\\genericservices.statusgeneric.1.2.0.nupkg.sha512",
     "C:\\Users\\pca189\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\pca189\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
@@ -34,6 +37,7 @@
     "C:\\Users\\pca189\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\pca189\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\pca189\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
+    "C:\\Users\\pca189\\.nuget\\packages\\system.componentmodel.annotations\\4.6.0\\system.componentmodel.annotations.4.6.0.nupkg.sha512",
     "C:\\Users\\pca189\\.nuget\\packages\\system.configuration.configurationmanager\\4.7.0\\system.configuration.configurationmanager.4.7.0.nupkg.sha512",
     "C:\\Users\\pca189\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.1\\system.diagnostics.diagnosticsource.6.0.1.nupkg.sha512",
     "C:\\Users\\pca189\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512",
@@ -47,9 +51,9 @@
     "C:\\Users\\pca189\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\pca189\\.nuget\\packages\\system.text.encoding.codepages\\4.7.0\\system.text.encoding.codepages.4.7.0.nupkg.sha512",
     "C:\\Users\\pca189\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
-    "C:\\Users\\pca189\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\pca189\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\pca189\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512"
+    "C:\\Users\\pca189\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.26\\microsoft.windowsdesktop.app.ref.6.0.26.nupkg.sha512",
+    "C:\\Users\\pca189\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.26\\microsoft.netcore.app.ref.6.0.26.nupkg.sha512",
+    "C:\\Users\\pca189\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.26\\microsoft.aspnetcore.app.ref.6.0.26.nupkg.sha512"
   ],
   "logs": []
 }
