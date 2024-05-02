@@ -54,7 +54,7 @@ namespace Crud_Operation.Controllers
         [HttpGet("{id:min(1)}")]
         [ProducesResponseType(typeof(RetrieveUserDataDto), StatusCodes.Status200OK)]
         [Produces("application/json")]
-        public async Task<IActionResult> GetUserById([FromRoute] long id)
+        public async Task<IActionResult> RetrieveUserById([FromRoute] long id)
         {
             var status = await _user.GetUserById(id);
             return Ok(status);
@@ -65,7 +65,7 @@ namespace Crud_Operation.Controllers
         [ProducesResponseType(typeof(CreateGenericResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PostUser([FromBody] CreateOrUpdateUserReqModel payload)
+        public async Task<IActionResult> CreateUser([FromBody] CreateOrUpdateUserReqModel payload)
         {
             var validator = new CreateOrUpdateUserValidator(true);
 
@@ -87,7 +87,7 @@ namespace Crud_Operation.Controllers
         [ProducesResponseType(typeof(CreateGenericResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PutUser([FromQuery] long id, [FromBody] CreateOrUpdateUserReqModel payload)
+        public async Task<IActionResult> UpdateUser([FromRoute] long id, [FromBody] CreateOrUpdateUserReqModel payload)
         {
 
             var validator = new CreateOrUpdateUserValidator(true);
@@ -109,7 +109,7 @@ namespace Crud_Operation.Controllers
         [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete("{id:min(1)}")]
-        public async Task<IActionResult> DeleteUser(long id)
+        public async Task<IActionResult> DeleteUser([FromRoute]long id)
         {
             var status = await _user.DeleteUser(Convert.ToInt32(id));
             return status.Response(ModelState, HttpContext, "");
