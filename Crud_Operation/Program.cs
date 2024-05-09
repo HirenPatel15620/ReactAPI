@@ -1,15 +1,18 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Model.Data;
 using Repository;
+using Repository.Services.StackService;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<IUser, User>();
+builder.Services.AddScoped<IUser, UserService>();
+builder.Services.AddScoped<IStackService, StackService>();
 builder.Services.AddControllers();
-builder.Services.AddDbContext<typescript_demoContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString")));
+builder.Services.AddDbContext<typeScript_demoContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,7 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseRouting();   
+app.UseRouting();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

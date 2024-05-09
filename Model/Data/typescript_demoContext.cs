@@ -6,21 +6,19 @@ using Model.Models;
 
 namespace Model.Data
 {
-    public partial class typescript_demoContext : DbContext
+    public partial class typeScript_demoContext : DbContext
     {
-        public typescript_demoContext()
+        public typeScript_demoContext()
         {
         }
 
-        public typescript_demoContext(DbContextOptions<typescript_demoContext> options)
+        public typeScript_demoContext(DbContextOptions<typeScript_demoContext> options)
             : base(options)
         {
         }
 
-        public virtual DbSet<GeoJsonDatum> GeoJsonData { get; set; } = null!;
-        public virtual DbSet<PostalCodeDatum> PostalCodeData { get; set; } = null!;
-        public virtual DbSet<State> States { get; set; } = null!;
-        public virtual DbSet<Suburb> Suburbs { get; set; } = null!;
+        public virtual DbSet<Stack> Stacks { get; set; } = null!;
+        public virtual DbSet<StackDetail> StackDetails { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,35 +26,25 @@ namespace Model.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=PCE56\\SQL2017;DataBase=typescript_demo;User ID=sa;Password=tatva123;TrustServerCertificate=True");
+                optionsBuilder.UseSqlServer("Data Source=PCE56\\SQL2017;DataBase=typeScript_demo;User ID=sa;Password=tatva123;TrustServerCertificate=True");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PostalCodeDatum>(entity =>
+            modelBuilder.Entity<Stack>(entity =>
             {
-                entity.HasNoKey();
+                entity.ToTable("Stack");
 
-                entity.ToTable("PostalCode_Data");
-
-                entity.Property(e => e.Altitude).HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.AltitudeMode).HasColumnName("altitudeMode");
+                entity.Property(e => e.Id).HasColumnName("id");
             });
 
-            modelBuilder.Entity<State>(entity =>
+            modelBuilder.Entity<StackDetail>(entity =>
             {
-                entity.ToTable("state");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<Suburb>(entity =>
-            {
-                entity.ToTable("Suburb");
+                entity.HasOne(d => d.Stack)
+                    .WithMany(p => p.StackDetails)
+                    .HasForeignKey(d => d.StackId)
+                    .HasConstraintName("FK_Stack_StackDetails");
             });
 
             modelBuilder.Entity<User>(entity =>

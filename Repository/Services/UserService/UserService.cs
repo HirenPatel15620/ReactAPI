@@ -23,16 +23,16 @@ namespace Repository
         Task<IStatusGenericAdapter> DeleteUser(long id);
         #endregion
     }
-    public class User : IUser
+    public class UserService : IUser
     {
         #region Inject Dependencies
-        private readonly typescript_demoContext _db;
+        private readonly typeScript_demoContext _context;
         #endregion
 
         #region Constructor
-        public User(typescript_demoContext db)
+        public UserService(typeScript_demoContext context)
         {
-            _db = db;
+            _context = context;
         }
         #endregion
 
@@ -42,7 +42,7 @@ namespace Repository
         {
 
             var status = new List<RetrieveUserDataDto>();
-            var userQuery = from user in _db.Users
+            var userQuery = from user in _context.Users
                             select new RetrieveUserDataDto
                             {
                                 Body = user.Body,
@@ -56,7 +56,7 @@ namespace Repository
 
         public async Task<RetrieveUserDataDto> GetUserById(long id)
         {
-            var userQuery = from user in _db.Users
+            var userQuery = from user in _context.Users
                             where user.UserId == id
                             select new RetrieveUserDataDto
                             {
@@ -78,7 +78,7 @@ namespace Repository
 
             if (isNew)
             {
-                if (_db.Users.Where(x => x.UserId == payload.UserId).Any())
+                if (_context.Users.Where(x => x.UserId == payload.UserId).Any())
                 {
                     status.AddError("Duplicate User.", nameof(Model.Models.User));
                     return status.AddState(StatusGenericState.None);
@@ -87,7 +87,7 @@ namespace Repository
             }
             else
             {
-                data = await _db.Users.Where(x => x.UserId == userid).FirstOrDefaultAsync();
+                data = await _context.Users.Where(x => x.UserId == userid).FirstOrDefaultAsync();
                 if (data == null)
                 {
                     status.AddError(string.Format(ServiceMessages.Message_RecordNotFound, "User"), nameof(Model.Models.User));
@@ -98,16 +98,16 @@ namespace Repository
             data.Body = payload.Body;
 
 
-            var stragegy = _db.Database.CreateExecutionStrategy();
+            var stragegy = _context.Database.CreateExecutionStrategy();
             await stragegy.ExecuteAsync(async () =>
             {
-                using var transaction = await _db.Database.BeginTransactionAsync();
+                using var transaction = await _context.Database.BeginTransactionAsync();
                 try
                 {
                     if (isNew)
-                        await _db.Users.AddAsync(data);
+                        await _context.Users.AddAsync(data);
 
-                    await _db.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
                 catch (Exception)
@@ -127,24 +127,24 @@ namespace Repository
         {
             var status = new StatusGenericHandler<DeleteGenericResponseDto>();
 
-            var user = await _db.Users.Where(x => x.UserId == id).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(x => x.UserId == id).FirstOrDefaultAsync();
             if (user is null)
             {
                 status.AddError(string.Format(ServiceMessages.Message_RecordNotFound, "User"), nameof(Model.Models.User));
                 return status.AddState(StatusGenericState.None);
             }
 
-            var stragegy = _db.Database.CreateExecutionStrategy();
+            var stragegy = _context.Database.CreateExecutionStrategy();
 
             await stragegy.ExecuteAsync(async () =>
             {
-                using var transaction = await _db.Database.BeginTransactionAsync();
+                using var transaction = await _context.Database.BeginTransactionAsync();
 
                 try
                 {
-                    _db.Users.Remove(user);
+                    _context.Users.Remove(user);
 
-                    await _db.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
                 catch (Exception)
@@ -160,7 +160,7 @@ namespace Repository
 
 
 
-      
+
         #endregion
     }
 }
