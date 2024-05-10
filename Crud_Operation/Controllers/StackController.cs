@@ -31,7 +31,7 @@ namespace Crud_Operation.Controllers
         /// <summary>
         /// Retrieve All Stack
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Retrieve Stack Data Dto</returns>
         [HttpGet]
         [ProducesResponseType(typeof(RetrieveStackDataDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
@@ -47,7 +47,7 @@ namespace Crud_Operation.Controllers
         /// Get Stack Details Id
         /// </summary>
         /// <param name="id">Stack id</param>
-        /// <returns></returns>
+        /// <returns>List of Retrieve Stack Data Dto</returns>
         [HttpGet("{id:min(1)}")]
         [ProducesResponseType(typeof(List<RetrieveStackDataDto>), StatusCodes.Status200OK)]
         [Produces("application/json")]

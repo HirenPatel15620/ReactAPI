@@ -32,7 +32,7 @@ namespace Crud_Operation.Controllers
         /// <summary>
         /// Retrieve Get All User
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Retrieve User Data Dto</returns>
         [HttpGet]
         [ProducesResponseType(typeof(RetrieveUserDataDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
@@ -48,7 +48,7 @@ namespace Crud_Operation.Controllers
         /// Get UserBy Id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Retrieve User Data Dto</returns>
         [HttpGet("{id:min(1)}")]
         [ProducesResponseType(typeof(RetrieveUserDataDto), StatusCodes.Status200OK)]
         [Produces("application/json")]
@@ -58,7 +58,11 @@ namespace Crud_Operation.Controllers
             return Ok(status);
         }
 
-
+        /// <summary>
+        /// Create User
+        /// </summary>
+        /// <param name="payload">Create Or Update User Request Model</param>
+        /// <returns>Create Generic Response Dto</returns>
         [HttpPost]
         [ProducesResponseType(typeof(CreateGenericResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
@@ -81,6 +85,12 @@ namespace Crud_Operation.Controllers
 
         }
 
+        /// <summary>
+        /// Update User
+        /// </summary>
+        /// <param name="id">user id </param>
+        /// <param name="payload">Create Or Update User Request Model</param>
+        /// <returns>Create Generic Response Dto</returns>
         [HttpPut("{id:min(1)}")]
         [ProducesResponseType(typeof(CreateGenericResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
@@ -103,6 +113,11 @@ namespace Crud_Operation.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete User
+        /// </summary>
+        /// <param name="id">user id </param>
+        /// <returns>Delete Generic Response Dto</returns>
         [ProducesResponseType(typeof(DeleteGenericResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
