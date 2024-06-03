@@ -7,9 +7,11 @@ using Model.Data;
 using Model.Models;
 using Repository;
 using Repository.CommonServices;
+using Repository.FilterModels;
 using Repository.Models;
 using Repository.ModelValidators;
 using Repository.Services.UserService;
+using Repository.Services.UserService.Dto;
 
 namespace Crud_Operation.Controllers
 {
@@ -34,13 +36,13 @@ namespace Crud_Operation.Controllers
         /// </summary>
         /// <returns>Retrieve User Data Dto</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(RetrieveUserDataDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserListDataListDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces("application/json")]
-        public async Task<IActionResult> RetrieveGetAllUser()
+        public async Task<IActionResult> RetrieveGetAllUser([FromQuery] UserListDataFilter userListDataFilter)
         {
-            var results = await _user.RetrieveGetAllUser();
+            var results = await _user.RetrieveGetAllUser(userListDataFilter);
             return Ok(results);
         }
 

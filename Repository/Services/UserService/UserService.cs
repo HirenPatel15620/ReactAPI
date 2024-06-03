@@ -11,13 +11,18 @@ using StatusGeneric;
 using Model.Models;
 using Repository.Models;
 using ServiceLayer.Constants;
+using Repository.Services.UserService.Dto;
+using Repository.FilterModels;
+using Repository.Services.UserService.QueryObjects;
+using ServiceLayer.Generics;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Repository
 {
     public interface IUser
     {
         #region Interfaces
-        Task<List<RetrieveUserDataDto>> RetrieveGetAllUser();
+        Task<UserListDataListDto> RetrieveGetAllUser(UserListDataFilter userListDataFilter);
         Task<RetrieveUserDataDto> GetUserById(long id);
         Task<IStatusGenericAdapter> CreateOrUpdateUser(int userid, CreateOrUpdateUserReqModel payload);
         Task<IStatusGenericAdapter> DeleteUser(long id);
@@ -38,20 +43,48 @@ namespace Repository
 
         #region Method
 
-        public async Task<List<RetrieveUserDataDto>> RetrieveGetAllUser()
+        public async Task<UserListDataListDto> RetrieveGetAllUser(UserListDataFilter userListDataFilter)
         {
+            IQueryable<User> userListQuery = null;
+            List<User> userListData = new List<User>();
+            int totalRecords = 0;
+            
 
-            var status = new List<RetrieveUserDataDto>();
-            var userQuery = from user in _context.Users
-                            select new RetrieveUserDataDto
-                            {
-                                Body = user.Body,
-                                Title = user.Title,
-                                UserId = user.UserId
-                            };
+            userListQuery = from data in _context.Users
+                            select data;
 
-            return await userQuery.ToListAsync();
 
+
+            for (var i = 0; i < userListDataFilter.FilterBys.Count; i++)
+            {
+                var filterBy = userListDataFilter.FilterBys[i];
+
+                var filterValue = userListDataFilter.FilterValues[i];
+
+                if (filterValue != null)
+                {
+                    if (filterBy.ToString() != UserListFilterBy.UserId.ToString())
+                        userListQuery = userListQuery.FilteUserListDataBy(filterBy, filterValue);
+                }
+            }
+
+            totalRecords = await userListQuery.CountAsync();
+
+            if (userListDataFilter.PaginationEnabled == true)
+            {
+                userListData = await userListQuery
+                    .OrderUserListDataBy(userListDataFilter)
+                    .Page(userListDataFilter.PageNumber, userListDataFilter.PageSize)
+                    .ToListAsync();
+                return new UserListDataListDto(totalRecords, userListDataFilter.PageSize, userListData);
+            }
+            else
+            {
+                userListData = await userListQuery
+                    .OrderUserListDataBy(userListDataFilter)
+                    .ToListAsync();
+                return new UserListDataListDto(totalRecords, totalRecords, userListData);
+            }
         }
 
         public async Task<RetrieveUserDataDto> GetUserById(long id)
@@ -74,7 +107,7 @@ namespace Repository
 
             payload.UserId = userid;
             bool isNew = payload.UserId == 0 ? true : false;
-            Model.Models.User data;
+            Model.Models.User? data;
 
             if (isNew)
             {
@@ -164,3 +197,4 @@ namespace Repository
         #endregion
     }
 }
+

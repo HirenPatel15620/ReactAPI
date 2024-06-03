@@ -26,7 +26,7 @@ namespace Model.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=PCE56\\SQL2017;DataBase=typeScript_demo;User ID=sa;Password=tatva123;TrustServerCertificate=True");
+                optionsBuilder.UseSqlServer("Data Source=PCE56\\SQL2017;Database=typeScript_demo;User ID=sa;Password=tatva123;TrustServerCertificate=True");
             }
         }
 
@@ -53,13 +53,9 @@ namespace Model.Data
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
-                entity.Property(e => e.Body)
-                    .HasColumnType("text")
-                    .HasColumnName("body");
+                entity.Property(e => e.Body).HasColumnName("body");
 
-                entity.Property(e => e.Title)
-                    .HasColumnType("text")
-                    .HasColumnName("title");
+                entity.Property(e => e.Title).HasColumnName("title");
             });
 
             OnModelCreatingPartial(modelBuilder);

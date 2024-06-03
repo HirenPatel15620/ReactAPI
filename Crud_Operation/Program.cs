@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Model.Data;
 using Repository;
 using Repository.Services.StackService;
+using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowOrigin",
         builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
+
+builder.Services.AddControllers().AddNewtonsoftJson().AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); 
+}).ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; }); ;
 
 var app = builder.Build();
 
