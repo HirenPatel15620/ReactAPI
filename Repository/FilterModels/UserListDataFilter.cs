@@ -12,9 +12,9 @@ namespace Repository.FilterModels
         public List<UserListFilterBy> FilterBys { get; init; } = new List<UserListFilterBy> { UserListFilterBy.NoFilter };
         public List<string> FilterValues { get; init; } = new List<string> { string.Empty };
         public UserListOrderByOptions OrderBy { get; init; } = UserListOrderByOptions.UserIdDesc;
-        public bool PaginationEnabled { get; init; }
+        public bool PaginationEnabled { get; init; } = true;
         public int PageNumber { get; init; } = 0;
-        public int PageSize { get; init; } = 50;
+        public int PageSize { get; init; } = 10;
     }
 
 
@@ -26,15 +26,14 @@ namespace Repository.FilterModels
         [Display(Name = "Sort by Title")] Title,
         [Display(Name = "Sort by Body Desc")] BodyDesc,
         [Display(Name = "Sort by Body")] Body,
-       
     }
 
     public enum UserListFilterBy
     {
         [Display(Name = "All")] NoFilter = 0,
+        [Display(Name = "Search")] Search,
         [Display(Name = "User Id")] UserId,
         [Display(Name = "Title")] Title,
         [Display(Name = "Body")] Body,
-        
     }
 }

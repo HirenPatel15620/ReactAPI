@@ -48,7 +48,6 @@ namespace Repository
             IQueryable<User> userListQuery = null;
             List<User> userListData = new List<User>();
             int totalRecords = 0;
-            
 
             userListQuery = from data in _context.Users
                             select data;
@@ -63,7 +62,6 @@ namespace Repository
 
                 if (filterValue != null)
                 {
-                    if (filterBy.ToString() != UserListFilterBy.UserId.ToString())
                         userListQuery = userListQuery.FilteUserListDataBy(filterBy, filterValue);
                 }
             }
@@ -197,4 +195,3 @@ namespace Repository
         #endregion
     }
 }
-

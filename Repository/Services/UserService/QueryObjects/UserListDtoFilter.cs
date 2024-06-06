@@ -2,6 +2,7 @@
 using Repository.FilterModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,13 @@ namespace Repository.Services.UserService.QueryObjects
                     break;
                 case UserListFilterBy.Title:
                     data = data.Where(x => x.Title != null && (x.Title == filterValue || x.Title.Contains(filterValue)));
+                    break;
+                case UserListFilterBy.Search:
+                    var valid = int.TryParse(filterValue, out int userIdValue);
+                    if (valid)
+                        data = data.Where(x => x.UserId == userIdValue);
+                    else
+                    data = data.Where(x => (x.Title != null && x.Title.Contains(filterValue)) || (x.Body != null && x.Body.Contains(filterValue)));
                     break;
                 case UserListFilterBy.Body:
                     data = data.Where(x => x.Body != null && (x.Body == filterValue || x.Body.Contains(filterValue)));
