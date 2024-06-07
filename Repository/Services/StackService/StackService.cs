@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Model.Data;
 using Model.Models;
+using Repository.FilterModels;
 using Repository.Models;
-using Repository.Services.UserService;
+using Repository.Services.StackService.Dto;
+using Repository.Services.StackService.QueryObjects;
+using Repository.Services.UserService.Dto;
 using ServiceLayer.Constants;
+using ServiceLayer.Generics;
 using ServiceLayer.Utilities;
 using StatusGeneric;
 using System;
@@ -16,7 +20,7 @@ namespace Repository.Services.StackService
 {
     public interface IStackService
     {
-        Task<List<RetrieveStackDataDto>> RetrieveAllStack();
+        Task<StackListDataListDto> RetrieveAllStack(StackListDataFilter stackListDataFilter);
         Task<List<RetrieveStackDataDto>> RetrieveStackDetailsById(int id);
         Task<IStatusGenericAdapter> CreateOrUpdateStackDetailsData(int id, CreateOrUpdateStackDetailsReqModal payload);
         Task<IStatusGenericAdapter> DeleteStack(int stackId);
@@ -36,19 +40,46 @@ namespace Repository.Services.StackService
         }
         #endregion
 
-        public async Task<List<RetrieveStackDataDto>> RetrieveAllStack()
+        public async Task<StackListDataListDto> RetrieveAllStack(StackListDataFilter stackListDataFilter)
         {
 
-            var status = new List<RetrieveStackDataDto>();
-            var stackQuery = from stack in _context.Stacks
-                             select new RetrieveStackDataDto
-                             {
-                                 Id = stack.Id,
-                                 Title = stack.Name,
-                             };
+            IQueryable<Stack> stackListQuery = null;
+            List<Stack> stackListData = new List<Stack>();
+            int totalRecords = 0;
 
-            return await stackQuery.ToListAsync();
+            stackListQuery = from stack in _context.Stacks
+                         select stack;
 
+
+            for (var i = 0; i < stackListDataFilter.FilterBys.Count; i++)
+            {
+                var filterBy = stackListDataFilter.FilterBys[i];
+
+                var filterValue = stackListDataFilter.FilterValues[i];
+
+                if (filterValue != null)
+                {
+                    stackListQuery = stackListQuery.FilteStackListDataBy(filterBy, filterValue);
+                }
+            }
+
+            totalRecords = await stackListQuery.CountAsync();
+
+            if (stackListDataFilter.PaginationEnabled == true)
+            {
+                stackListData = await stackListQuery
+                    .OrderStackListDataBy(stackListDataFilter)
+                    .Page(stackListDataFilter.PageNumber, stackListDataFilter.PageSize)
+                    .ToListAsync();
+                return new StackListDataListDto(totalRecords, stackListDataFilter.PageSize, stackListData);
+            }
+            else
+            {
+                stackListData = await stackListQuery
+                    .OrderStackListDataBy(stackListDataFilter)
+                    .ToListAsync();
+                return new StackListDataListDto(totalRecords, totalRecords, stackListData);
+            }
         }
 
         public async Task<List<RetrieveStackDataDto>> RetrieveStackDetailsById(int id)
