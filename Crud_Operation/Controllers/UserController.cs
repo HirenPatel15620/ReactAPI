@@ -99,8 +99,7 @@ namespace Crud_Operation.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateUser([FromRoute] long id, [FromBody] CreateOrUpdateUserReqModel payload)
         {
-
-            var validator = new CreateOrUpdateUserValidator(true);
+            var validator = new CreateOrUpdateUserValidator();
 
             ValidationResult modelResult = validator.Validate(payload);
 
