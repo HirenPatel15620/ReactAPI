@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Model.Data;
 using Repository;
+using Repository.Services.CompaniesHouse;
 using Repository.Services.StackService;
 using System.Text.Json.Serialization;
 
@@ -13,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUser, UserService>();
 builder.Services.AddScoped<IStackService, StackService>();
 builder.Services.AddControllers();
+builder.Services.AddHttpClient<CompaniesHouseService>();
 builder.Services.AddDbContext<typeScript_demoContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -25,7 +27,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers().AddNewtonsoftJson().AddJsonOptions(opt =>
 {
-    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); 
+    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 }).ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; }); ;
 
 var app = builder.Build();
