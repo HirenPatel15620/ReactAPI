@@ -128,6 +128,21 @@ namespace Crud_Operation.Controllers
             var status = await _user.DeleteUser(Convert.ToInt32(id));
             return status.Response(ModelState, HttpContext, "");
         }
+
+
+        /// <summary>
+        /// Retrieve Drag And Drop
+        /// </summary>
+        /// <returns>Retrive Drag And Drop List Dto</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Produces("application/json")]
+        public async Task<IActionResult> RetrieveDragAndDrop()
+        {
+            var results = await _user.RetrieveDragAndDrop();
+            return Ok(results);
+        }
         #endregion
     }
 }
