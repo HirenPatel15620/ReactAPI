@@ -1,57 +1,92 @@
-﻿using Model.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Model.Data;
+using Model.Models;
+using Repository.FilterModels;
+using Repository.Models;
 using Repository.Services.UserService;
+using Repository.Services.UserService.Dto;
+using Repository.Services.UserService.QueryObjects;
+using ServiceLayer.Constants;
+using ServiceLayer.Generics;
 using ServiceLayer.Utilities;
 using StatusGeneric;
-using Model.Models;
-using Repository.Models;
-using ServiceLayer.Constants;
 
 namespace Repository
 {
     public interface IUser
     {
         #region Interfaces
-        Task<List<RetrieveUserDataDto>> RetrieveGetAllUser();
+
+        Task<UserListDataListDto> RetrieveGetAllUser(UserListDataFilter userListDataFilter);
+
         Task<RetrieveUserDataDto> GetUserById(long id);
+
         Task<IStatusGenericAdapter> CreateOrUpdateUser(int userid, CreateOrUpdateUserReqModel payload);
+
         Task<IStatusGenericAdapter> DeleteUser(long id);
-        #endregion
+
+        Task<RetriveDragAndDropListDto> RetrieveDragAndDrop();
+
+        #endregion Interfaces
     }
+
     public class UserService : IUser
     {
         #region Inject Dependencies
+
         private readonly typeScript_demoContext _context;
-        #endregion
+
+        #endregion Inject Dependencies
 
         #region Constructor
+
         public UserService(typeScript_demoContext context)
         {
             _context = context;
         }
-        #endregion
+
+        #endregion Constructor
 
         #region Method
 
-        public async Task<List<RetrieveUserDataDto>> RetrieveGetAllUser()
+        public async Task<UserListDataListDto> RetrieveGetAllUser(UserListDataFilter userListDataFilter)
         {
+            IQueryable<User> userListQuery = null;
+            List<User> userListData = new List<User>();
+            int totalRecords = 0;
 
-            var status = new List<RetrieveUserDataDto>();
-            var userQuery = from user in _context.Users
-                            select new RetrieveUserDataDto
-                            {
-                                Body = user.Body,
-                                Title = user.Title,
-                                UserId = user.UserId
-                            };
+            userListQuery = from data in _context.Users
+                            select data;
 
-            return await userQuery.ToListAsync();
+            for (var i = 0; i < userListDataFilter.FilterBys.Count; i++)
+            {
+                var filterBy = userListDataFilter.FilterBys[i];
 
+                var filterValue = userListDataFilter.FilterValues[i];
+
+                if (filterValue != null)
+                {
+                    userListQuery = userListQuery.FilteUserListDataBy(filterBy, filterValue);
+                }
+            }
+
+            totalRecords = await userListQuery.CountAsync();
+
+            if (userListDataFilter.PaginationEnabled == true)
+            {
+                userListData = await userListQuery
+                    .OrderUserListDataBy(userListDataFilter)
+                    .Page(userListDataFilter.PageNumber, userListDataFilter.PageSize)
+                    .ToListAsync();
+                return new UserListDataListDto(totalRecords, userListDataFilter.PageSize, userListData);
+            }
+            else
+            {
+                userListData = await userListQuery
+                    .OrderUserListDataBy(userListDataFilter)
+                    .ToListAsync();
+                return new UserListDataListDto(totalRecords, totalRecords, userListData);
+            }
         }
 
         public async Task<RetrieveUserDataDto> GetUserById(long id)
@@ -74,11 +109,11 @@ namespace Repository
 
             payload.UserId = userid;
             bool isNew = payload.UserId == 0 ? true : false;
-            Model.Models.User data;
+            Model.Models.User? data;
 
             if (isNew)
             {
-                if (_context.Users.Where(x => x.UserId == payload.UserId).Any())
+                if (await _context.Users.Where(x => x.UserId == payload.UserId).AnyAsync())
                 {
                     status.AddError("Duplicate User.", nameof(Model.Models.User));
                     return status.AddState(StatusGenericState.None);
@@ -96,7 +131,6 @@ namespace Repository
             }
             data.Title = payload.Title;
             data.Body = payload.Body;
-
 
             var stragegy = _context.Database.CreateExecutionStrategy();
             await stragegy.ExecuteAsync(async () =>
@@ -119,9 +153,7 @@ namespace Repository
 
             status.SetResult(new CreateGenericResponseDto() { ID = Convert.ToInt32(data.UserId), Success = true });
             return status.AddState(isNew ? StatusGenericState.Created : StatusGenericState.Modified);
-
         }
-
 
         public async Task<IStatusGenericAdapter> DeleteUser(long id)
         {
@@ -130,7 +162,7 @@ namespace Repository
             var user = await _context.Users.Where(x => x.UserId == id).FirstOrDefaultAsync();
             if (user is null)
             {
-                status.AddError(string.Format(ServiceMessages.Message_RecordNotFound, "User"), nameof(Model.Models.User));
+                status.AddError(string.Format(ServiceMessages.Message_RecordNotFound, "User"), nameof(Model.Models.User ));
                 return status.AddState(StatusGenericState.None);
             }
 
@@ -158,9 +190,21 @@ namespace Repository
             return status.AddState(StatusGenericState.Deleted);
         }
 
+        public async Task<RetriveDragAndDropListDto> RetrieveDragAndDrop()
+        {
+            IQueryable<DragAndDrop> DragAndDropListQuery = null;
+            List<DragAndDrop> DragAndDropData = new List<DragAndDrop>();
+            int totalRecords = 0;
 
+            DragAndDropListQuery = from dragAndDrops in _context.DragAndDrops
+                                   select dragAndDrops;
 
+            totalRecords = await DragAndDropListQuery.CountAsync();
 
-        #endregion
+            DragAndDropData = await DragAndDropListQuery.ToListAsync();
+            return new RetriveDragAndDropListDto(totalRecords, totalRecords, DragAndDropData);
+        }
+
+        #endregion Method
     }
 }

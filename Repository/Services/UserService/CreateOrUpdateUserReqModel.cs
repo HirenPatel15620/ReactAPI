@@ -8,7 +8,7 @@ namespace Repository.Services.UserService
 {
     public class CreateOrUpdateUserReqModel
     {
-        public long UserId { get; set; }
+        public int UserId { get; set; }
         public string Title { get; set; } = null!;
         public string? Body { get; set; }
     }

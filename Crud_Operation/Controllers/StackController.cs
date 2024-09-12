@@ -2,10 +2,11 @@ using FluentValidation.Results;
 using isCTv9.API.Core.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Repository.CommonServices;
+using Repository.FilterModels;
 using Repository.Models;
 using Repository.ModelValidators;
 using Repository.Services.StackService;
-using Repository.Services.UserService;
+using Repository.Services.StackService.Dto;
 
 namespace Crud_Operation.Controllers
 {
@@ -33,13 +34,13 @@ namespace Crud_Operation.Controllers
         /// </summary>
         /// <returns>Retrieve Stack Data Dto</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(RetrieveStackDataDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(StackListDataListDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces("application/json")]
-        public async Task<IActionResult> RetrieveAllStack()
+        public async Task<IActionResult> RetrieveAllStack([FromQuery] StackListDataFilter stackListDataFilter)
         {
-            var results = await _stack.RetrieveAllStack();
+            var results = await _stack.RetrieveAllStack(stackListDataFilter);
             return Ok(results);
         }
 

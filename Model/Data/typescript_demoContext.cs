@@ -17,6 +17,7 @@ namespace Model.Data
         {
         }
 
+        public virtual DbSet<DragAndDrop> DragAndDrops { get; set; } = null!;
         public virtual DbSet<Stack> Stacks { get; set; } = null!;
         public virtual DbSet<StackDetail> StackDetails { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
@@ -32,34 +33,31 @@ namespace Model.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<DragAndDrop>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("DragAndDrop");
+            });
+
             modelBuilder.Entity<Stack>(entity =>
             {
                 entity.ToTable("Stack");
-
-                entity.Property(e => e.Id).HasColumnName("id");
             });
 
             modelBuilder.Entity<StackDetail>(entity =>
             {
+                entity.ToTable("StackDetail");
+
                 entity.HasOne(d => d.Stack)
                     .WithMany(p => p.StackDetails)
                     .HasForeignKey(d => d.StackId)
-                    .HasConstraintName("FK_Stack_StackDetails");
+                    .HasConstraintName("FK_StackDetail_Stack");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("user");
-
-                entity.Property(e => e.UserId).HasColumnName("user_id");
-
-                entity.Property(e => e.Body)
-                    .HasColumnType("text")
-                    .HasColumnName("body");
-
-                entity.Property(e => e.Title)
-                    .HasColumnType("text")
-                    .HasColumnName("title");
+                entity.ToTable("User");
             });
 
             OnModelCreatingPartial(modelBuilder);
