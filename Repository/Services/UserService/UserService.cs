@@ -162,7 +162,7 @@ namespace Repository
             var user = await _context.Users.Where(x => x.UserId == id).FirstOrDefaultAsync();
             if (user is null)
             {
-                status.AddError(string.Format(ServiceMessages.Message_RecordNotFound, "User"), nameof(Model.Models.User));
+                status.AddError(string.Format(ServiceMessages.Message_RecordNotFound, "User"), nameof(Model.Models.User ));
                 return status.AddState(StatusGenericState.None);
             }
 
